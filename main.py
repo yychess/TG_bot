@@ -68,7 +68,8 @@ async def add(update, context):
             con = sqlite3.connect(f"calendar.sqlite")
             cur = con.cursor()
 
-            cur.execute(f"insert into calendar values {(date.day, date.month, date.year, event, update.message.chat_id)}")
+            cur.execute(f"insert into calendar values "
+                        f"{(date.day, date.month, date.year, event, update.message.chat_id)}")
             con.commit()
             await update.message.reply_text("Я записал дату\n" + text)
             con.close()
@@ -81,7 +82,8 @@ async def add(update, context):
 async def my_plans(update, context):
     con = sqlite3.connect(f"calendar.sqlite")
     cur = con.cursor()
-    result = cur.execute(f"""SELECT day, month, year, event FROM calendar where user = {update.message.chat_id}""").fetchall()
+    result = cur.execute(
+        f"""SELECT day, month, year, event FROM calendar where user = {update.message.chat_id}""").fetchall()
     if result:
         plans = "Твои планы:\n"
         mas_plans = []
